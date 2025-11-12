@@ -102,6 +102,9 @@ Mô hình học máy được sử dụng để dự đoán nhu cầu dinh dư�
 * **Mô hình:** `RandomForestRegressor` được huấn luyện độc lập cho Calo (`model_cal.pkl`) và Protein (`model_prot.pkl`).
 * **Đánh giá:** Sử dụng **R² Score**, **MAE**, và **RMSE** để đánh giá độ chính xác của mô hình so với Ground Truth.
 
+<p align="center">
+  ![Đánh giá mô hình R] (images/logo.png)
+</p>
 ---
 
 ## 💻 Ứng dụng Streamlit và Tính năng Gợi ý
