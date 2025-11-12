@@ -60,129 +60,64 @@ project/
 
 ---
 
-## 🛠️ Công nghệ sử dụng
+## 🛠️ Công nghệ & Yêu cầu Hệ thống
 
-- **Python**: Pandas, NumPy, ast, Matplotlib
-- **Machine Learning**: scikit-learn (RandomForestRegressor, StandardScaler, KMeans)
-- **Text Processing**: TfidfVectorizer
-- **Web App**: Streamlit
-- **Serialization**: Pickle
+| Lĩnh vực | Công nghệ | Chi tiết |
+| :--- | :--- | :--- |
+| **Dữ liệu** | Python, Pandas, NumPy, ast | Tiền xử lý, chuyển đổi cấu trúc dữ liệu dinh dưỡng (JSON $\to$ cột). |
+| **Học máy (ML)** | scikit-learn (RandomForestRegressor) | Dự đoán nhu cầu Calo/Protein cá nhân hóa. |
+| **Gợi ý & Phân loại** | TfidfVectorizer, KMeans | Phân loại món ăn thành 5 nhóm cluster để gợi ý món thay thế. |
+| **Giao diện** | Streamlit | Xây dựng Web App tương tác (Sidebar, Bảng, Biểu đồ). |
 
----
-
-## 🛠️ Yêu cầu hệ thống
-
-### Phần mềm
-- Python 3.x
-- Thư viện: `numpy`, `pandas`, `scikit-learn`, `tensorflow`, `joblib`, `streamlit`, `matplotlib`, `seaborn`
-
-### Lưu ý
-- Chuẩn hóa dữ liệu người dùng và dữ liệu thực phẩm trước khi huấn luyện.
-- Máy tính có GPU sẽ tăng tốc quá trình huấn luyện mô hình Machine Learning.
+**Yêu cầu Phần mềm:** Python 3.x, và các thư viện trong `requirements.txt` (`streamlit`, `scikit-learn`, `pandas`, `matplotlib`, `pickle`).
 
 ---
 
-## 🔹 Xử lý dữ liệu
+## 🔬 Khối Xử lý Dữ liệu và Feature Engineering
 
-1. **Đọc dữ liệu**: `raw-data_recipe.csv` chứa thông tin công thức, nguyên liệu, dinh dưỡng.
-2. **Làm sạch dữ liệu**:
-   - Bỏ các cột không cần thiết: `aver_rate`, `image_url`, `reviews`, `review_nums`.
-   - Parse cột `nutritions` từ chuỗi JSON sang các cột dinh dưỡng: `calories`, `protein`, `fat`, `carbohydrates`, `fiber`, `sodium`.
-   - Tách danh sách nguyên liệu (`ingredients_list`).
-3. **Xuất dữ liệu sạch**: `recipes_clean.csv`.
+Dữ liệu thô được chuẩn hóa để xây dựng Ground Truth cho mô hình AI và các tính năng lọc.
 
-```python
-df_final.to_csv('recipes_clean.csv', index=False)
-4. **Lọc món ăn theo thói quen:**:
-   - Tránh thực phẩm người dùng không thích.
-   - Ưu tiên thực phẩm người dùng yêu cầu.
+### 1. Tính toán Chỉ số Cơ thể & Mục tiêu
 
-## 🔹 Tính toán chỉ số cơ thể
+* **Chỉ số BMI:** Tính toán dựa trên cân nặng (kg) và chiều cao (m).
+    $$BMI = \frac{\text{weight\_kg}}{(\text{height\_m})^2}$$
+* **Nhu cầu Calo (Target TDEE):** Tính TDEE dựa trên công thức BMR (Harris-Benedict hoặc Mifflin-St Jeor), mức độ vận động, và điều chỉnh theo mục tiêu/BMI.
+    * **Điều chỉnh theo BMI:** BMI > 25 $\to$ giảm **15%** TDEE; BMI < 18.5 $\to$ tăng **15%** TDEE.
+* **Nhu cầu Protein (Target Protein):** Thiết lập là **2g / kg** trọng lượng cơ thể (phù hợp với người tập luyện/kiểm soát cân nặng).
 
-- **BMI**: 
+### 2. Tiền xử lý Dữ liệu Công thức
 
-\[
-BMI = \frac{\text{weight\_kg}}{(\text{height\_m})^2}
-\]
-
-- **TDEE (Total Daily Energy Expenditure)**: dựa trên BMR, giới tính, tuổi, chiều cao, cân nặng và mức độ vận động.
-
-- **Điều chỉnh TDEE theo BMI**:
-
-  - BMI > 25 → giảm 15%
-  - BMI < 18.5 → tăng 15%
-
-```python
-def adjust_tdee(row):
-    if row['BMI'] > 25:
-        return row['tdee'] * 0.85
-    elif row['BMI'] < 18.5:
-        return row['tdee'] * 1.15
-    else:
-        return row['tdee']
-- **Nhu cầu protein: 2g / kg trọng lượng cơ thể.
----
-
-## 🔹 Huấn luyện mô hình AI
-
-- **Dữ liệu đầu vào**: BMI, tuổi, giới tính, chiều cao, cân nặng, mức độ vận động
-- **Mục tiêu dự đoán**: `target_calories` và `target_protein`
-- **Mô hình sử dụng**: `RandomForestRegressor`
-- **Đánh giá mô hình**:
-  - R² Score
-  - MAE (Mean Absolute Error)
-  - RMSE (Root Mean Squared Error)
-
-- **Lưu mô hình**:
-
-```python
-with open('model_cal.pkl', 'wb') as f:
-    pickle.dump(model_cal, f)
-
-with open('model_prot.pkl', 'wb') as f:
-    pickle.dump(model_prot, f)
-
-# 🥗 Tổng quan Hệ thống Gợi ý Thực đơn Cá nhân (AI Nutrition Recommender)
-
-Dự án này sử dụng Học máy (Machine Learning) và Thuật toán tối ưu hóa để tạo ra thực đơn ăn uống hàng ngày được cá nhân hóa dựa trên thông tin cơ thể (BMI), mục tiêu cân nặng, và thói quen ăn uống của người dùng.
+* **Làm sạch:** Bỏ các cột không cần thiết (`aver_rate`, `image_url`, v.v.).
+* **Parse Dinh dưỡng:** Chuyển đổi cột `nutritions` (chuỗi JSON) thành các cột số (`calories`, `protein`, `fat`, `carbohydrates`, v.v.).
+* **Lọc Cá nhân:** Xây dựng hàm lọc món ăn dựa trên danh sách `Thực phẩm muốn tránh` và `Thực phẩm ưu tiên` của người dùng.
 
 ---
 
-## 💻 Ứng dụng Streamlit và Tính năng Cá nhân hóa
+## 🧠 Huấn luyện Mô hình AI (Random Forest)
 
-Ứng dụng được triển khai bằng Streamlit, cung cấp giao diện trực quan và các tính năng chính sau:
+Mô hình học máy được sử dụng để dự đoán nhu cầu dinh dưỡng cá nhân hóa.
 
-### ⚙️ Sidebar: Thu thập Thông tin Người dùng
+* **Dữ liệu Đầu vào (X):** Các thông số cơ thể đã được số hóa (`BMI`, `age`, `gender_num`, `height_cm`, `weight_kg`, `activity_num`).
+* **Mục tiêu Dự đoán (Y):** `target_calories` và `target_protein`.
+* **Mô hình:** `RandomForestRegressor` được huấn luyện độc lập cho Calo (`model_cal.pkl`) và Protein (`model_prot.pkl`).
+* **Đánh giá:** Sử dụng **R² Score**, **MAE**, và **RMSE** để đánh giá độ chính xác của mô hình so với Ground Truth.
 
-* **Thông số Sinh học:** Nhập **Tuổi**, **Giới tính**, **Chiều cao**, **Cân nặng**.
-* **Hoạt động & Mục tiêu:** Chọn **Mức độ vận động** và **Mục tiêu cân nặng** (`giảm cân`, `giữ cân`, `tăng cân`).
-* **Sở thích Cá nhân:** Nhập **Thực phẩm muốn tránh / ưu tiên** (sử dụng để lọc công thức).
+---
+
+## 💻 Ứng dụng Streamlit và Tính năng Gợi ý
+
+Ứng dụng web cho phép người dùng tương tác và nhận thực đơn tức thì.
 
 ### 🌟 Tính năng Chính
 
-* **Dự đoán Nhu cầu:** Mô hình Random Forest Regressor dự đoán **Calo** và **Protein** cần thiết hàng ngày (được điều chỉnh theo BMI và Mục tiêu).
-* **Lọc Công thức:** Lọc công thức dựa trên sở thích (`avoid_foods`/`prefer_foods`) và nhóm món ăn.
-* **Chia Bữa Ăn:** Thực đơn được chia thành 4 bữa: **Bữa sáng**, **Bữa trưa**, **Bữa tối**, **Bữa phụ**.
-* **Hiển thị Chi tiết:** Bảng kết quả hiển thị chi tiết **Calo**, **Protein (g)**, **Chất béo (g)** và **Nhóm món** (Cluster) của từng món ăn.
-* **Gợi ý Thay thế:** Gợi ý món ăn thay thế dựa trên **nhóm cluster món ăn** (cùng nhóm dinh dưỡng/thành phần).
-* **Lịch sử:** Lưu **Lịch sử thực đơn** tối đa 10 lần tạo.
-
----
-
-## 🔬 Clustering Công thức Món ăn (KMeans)
-
-Để phân loại và gợi ý món thay thế hợp lý, chúng tôi đã áp dụng thuật toán **KMeans Clustering** trên dữ liệu công thức.
-
-* **Kỹ thuật Feature Engineering:**
-    * **TF-IDF** trên trường **Nguyên liệu** để nhận diện thành phần nguyên liệu.
-    * **Chuẩn hóa (StandardScaler)** các trường **dinh dưỡng chính** (Calo, Protein, Fat, Carb, Fiber, Sodium).
-    * Kết hợp hai vector này để tạo ra ma trận đầu vào cho Clustering.
-* **Phân loại (5 Cluster):**
-    * **Low-Calorie** (ít calo)
-    * **High-Protein** (nhiều protein)
-    * **Balanced** (cân bằng)
-    * **High-Fat** (nhiều chất béo)
-    * **Carb-Heavy** (nhiều tinh bột)
+* **Dự đoán Nhu cầu:** Sử dụng mô hình `RandomForestRegressor` đã lưu (`.pkl`) để dự đoán Calo và Protein mục tiêu.
+* **Clustering Món ăn (KMeans):**
+    * Sử dụng **TF-IDF trên Nguyên liệu** và **Chuẩn hóa Dinh dưỡng** làm đầu vào.
+    * Phân loại thành **5 Nhóm (Cluster)**: `Low-Calorie`, `High-Protein`, `Balanced`, `High-Fat`, `Carb-Heavy`.
+    * Mỗi món ăn được gán một **Nhóm món** (Cluster Label).
+* **Tạo Thực đơn:** Chia tổng Calo mục tiêu thành 4 bữa (Sáng, Trưa, Tối, Phụ) theo tỷ lệ phần trăm cố định. Gợi ý món ăn trong phạm vi Calo mục tiêu của từng bữa.
+* **Gợi ý Món Thay thế:** Đề xuất các món ăn **cùng nhóm Cluster** với món ăn hiện tại, cho phép người dùng thay thế và cập nhật dinh dưỡng.
+* **Lưu Lịch sử:** Lưu lại tối đa 10 thực đơn đã tạo.
 
 ### 📊 Ví dụ Kết quả Thực đơn
 
@@ -195,19 +130,7 @@ Dự án này sử dụng Học máy (Machine Learning) và Thuật toán tối 
 
 ---
 
-## 📈 Hình ảnh Trực quan & Đánh giá Mô hình AI
-
-Các biểu đồ được sử dụng để đánh giá hiệu quả của mô hình Random Forest Regressor:
-
-* **Scatter plot:** So sánh giá trị **thực tế (Ground Truth)** và **dự đoán** cho Calo và Protein (Độ gần của các điểm so với đường $y=x$ đánh giá hiệu suất mô hình).
-* **Histogram:** Phân phối **Sai số (Residuals)** giúp kiểm tra độ chệch và độ chính xác của mô hình.
-* Các biểu đồ này giúp **đánh giá hiệu quả mô hình AI** trong việc xác định nhu cầu dinh dưỡng cá nhân.
-
----
-
 ## 🚀 Hướng dẫn Chạy Ứng dụng
-
-Để khởi động ứng dụng Streamlit cục bộ, thực hiện các bước sau:
 
 1.  **Cài đặt Thư viện:**
     ```bash
@@ -215,9 +138,10 @@ Các biểu đồ được sử dụng để đánh giá hiệu quả của mô 
     ```
 2.  **Khởi động Ứng dụng:**
     ```bash
-    streamlit run app_multilang_full.py
+    streamlit run app.py 
+    # Lưu ý: Nếu tên file là app_multilang_full.py, hãy chạy lệnh tương ứng.
     ```
-3.  **Sử dụng:** Nhập thông tin cá nhân trên **Sidebar**, sau đó nhấn **Tạo thực đơn AI** để xem gợi ý. Món thay thế có thể chọn trực tiếp để cập nhật thực đơn.
+3.  **Sử dụng:** Nhập thông tin cá nhân trên **Sidebar**, nhấn **Tạo thực đơn AI** để nhận gợi ý.
 
 ---
 
@@ -225,22 +149,21 @@ Các biểu đồ được sử dụng để đánh giá hiệu quả của mô 
 
 ### 📌 Giá trị Hệ thống
 
-Hệ thống giúp người dùng:
-* **Dự đoán nhu cầu** Calo/Protein chính xác theo cơ thể và hoạt động.
-* **Tạo thực đơn cân bằng** và được **cá nhân hóa** theo mục tiêu.
-* **Lọc món ăn** theo sở thích và thói quen.
-* **Gợi ý món thay thế** để đa dạng hóa bữa ăn mà vẫn giữ nguyên nhóm dinh dưỡng.
+* **Cá nhân hóa Sâu:** Kết hợp phân tích BMI, TDEE, Mục tiêu và Thói quen ăn uống.
+* **Độ tin cậy:** Sử dụng Mô hình AI (Random Forest) để xác định nhu cầu dinh dưỡng, tăng cường tính chính xác so với công thức truyền thống.
+* **Tính linh hoạt:** Cho phép người dùng tùy chỉnh và thay thế món ăn theo nhóm dinh dưỡng.
 
 ### 🌟 Mở rộng trong Tương lai
 
-* **Dữ liệu:** Thêm dữ liệu dinh dưỡng chi tiết hơn (như chất béo bão hòa, đường, vitamin, khoáng chất).
-* **Thuật toán:** Tối ưu thuật toán chọn món bằng các kỹ thuật **Tối ưu hóa (Optimization)** để đảm bảo thực đơn **tổng thể** đạt chính xác các mục tiêu dinh dưỡng vĩ mô.
-* **Giao diện:** Hỗ trợ đa ngôn ngữ và giao diện di động.
+* **Tối ưu hóa Vĩ mô:** Áp dụng các thuật toán **Tối ưu hóa (Optimization)** để đảm bảo tổng lượng Calo, Protein, Carb và Fat trong ngày đạt chính xác mục tiêu đề ra (thay vì chỉ cố gắng đạt mục tiêu Calo cho từng bữa).
+* **Ràng buộc Bệnh lý:** Thêm logic lọc món ăn theo các bệnh lý đặc biệt (ví dụ: Tăng huyết áp $\to$ giảm Sodium).
+
+---
+
 ## 🤝 TÁC GIẢ 👥
 
 Dự án được phát triển bởi:
 
-- **Trần Hồng Quân**
+* **Trần Hồng Quân**
 
 © 2025 NHÓM 20, KHOA CÔNG NGHỆ THÔNG TIN, TRƯỜNG ĐẠI HỌC ĐẠI NAM.
-
