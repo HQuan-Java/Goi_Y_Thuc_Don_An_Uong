@@ -134,7 +134,7 @@ Mô hình học máy được sử dụng để dự đoán nhu cầu dinh dư�
 
 1.  **Cài đặt Thư viện:**
     ```bash
-    pip install -r requirements.txt
+    Run All trong file ipynb
     ```
 2.  **Khởi động Ứng dụng:**
     ```bash
