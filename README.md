@@ -103,7 +103,7 @@ Mô hình học máy được sử dụng để dự đoán nhu cầu dinh dư�
 * **Đánh giá:** Sử dụng **R² Score**, **MAE**, và **RMSE** để đánh giá độ chính xác của mô hình so với Ground Truth.
 
 <p align="center">
-  ![Đánh giá mô hình R] (images/logo.png)
+  <img src="images/ScoreR.jpg" alt="Đánh giá mô hình" width="700"/>
 </p>
 ---
 
