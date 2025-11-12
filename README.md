@@ -131,23 +131,39 @@ Mô hình học máy được sử dụng để dự đoán nhu cầu dinh dư�
 ---
 
 ## 🚀 Hướng dẫn Chạy Ứng dụng
-1.  **Tải về â tập dữ liệu csv:**
-    ```bash
-    https://drive.google.com/file/d/1mvCrJuJGAKtU5h3VxJU2NKt08P681EtO/view?usp=sharing
-    https://drive.google.com/file/d/1Nod03u4kkRfsb51H3j1bYK9rKjwFre8D/view?usp=sharing
-    
-    ```
 
-â.  **Chạy file ipynb:**
+### 1. 📂 Chuẩn bị Dữ liệu Gốc
+
+Tải các tập dữ liệu gốc về và đặt chúng trong thư mục chính của dự án:
+
+| Tên file | Liên kết Tải xuống |
+| :--- | :--- |
+| `raw-data_recipe.csv` | [Link Google Drive] |
+| `Food_and_Nutrition__.csv` | [Link Google Drive] |
+
+### 2. 🧠 Tiền xử lý và Huấn luyện Mô hình
+
+* **Chạy Notebook:** Mở file `xu_ly_du_lieu.ipynb` (hoặc tên file notebook tương ứng) và thực hiện **Run All**.
+
     ```bash
     Run All trong file ipynb
+    # Bước này sẽ tạo ra recipes_clean.csv, model_cal.pkl, model_prot.pkl
     ```
-2.  **Khởi động Ứng dụng:**
+
+### 3. ⚙️ Khởi động Ứng dụng Streamlit
+
+* **Cài đặt Thư viện:** Đảm bảo bạn đã cài đặt tất cả các thư viện cần thiết (`pip install -r requirements.txt`).
+
+* **Khởi động Ứng dụng:** Chạy ứng dụng bằng lệnh sau trong terminal:
+
     ```bash
-    streamlit run app.py 
+    streamlit run app.py
     # Lưu ý: Nếu tên file là app_multilang_full.py, hãy chạy lệnh tương ứng.
     ```
-3.  **Sử dụng:** Nhập thông tin cá nhân trên **Sidebar**, nhấn **Tạo thực đơn AI** để nhận gợi ý.
+
+### 4. 🍽️ Sử dụng Hệ thống
+
+* Nhập thông tin cá nhân trên **Sidebar**, sau đó nhấn **Tạo thực đơn AI** để nhận gợi ý.
 
 ---
 
