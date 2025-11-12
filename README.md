@@ -1,4 +1,4 @@
-<h1 align="center">👋 XÂY DỰNG HỆ THỐNG NHẬN DIỆN CỬ CHỈ TAY SỬ DỤNG CẢM BIẾN GIA TỐC ĐỂ ĐIỀU KHIỂN THIẾT BỊ THÔNG MINH 🧠</h1>
+<h1 align="center">👋 XÂY DỰNG HỆ THỐNG GỢI Ý THỰC ĐƠN DINH DƯỠNG CÁ NHÂN HÓA 🥗</h1>
 
 <div align="center">
   
@@ -13,151 +13,234 @@
 
 </div>
 
-<h2 align="center">💡 Giải pháp điều khiển thiết bị IoT bằng cử chỉ tay trực quan, chi phí thấp</h2>
+<h2 align="center">💡 Giải pháp gợi ý thực đơn thông minh dựa trên dữ liệu cá nhân<</h2>
 
 <p align="left">
-  Dự án này trình bày một Hệ thống nhận diện cử chỉ tay (Hand Gesture Recognition - HGR) sử dụng Cảm biến đo lường quán tính (IMU) hay còn gọi là cảm biến gia tốc MPU6050 kết hợp với vi điều khiển ESP32 và mô hình Học Sâu Long Short-Term Memory (LSTM). Hệ thống hoạt động theo kiến trúc Client-Server (TCP/IP), cho phép người dùng thực hiện các cử chỉ động (ví dụ: 'xoay trái', 'đấm thẳng') để điều khiển các thiết bị ngoại vi trong nhà thông minh (LED, Còi, LCD, Quạt). Giải pháp này cân bằng giữa chi phí thấp, tính riêng tư (không dùng camera) và hiệu suất nhận diện cao. 🚀
+  Dự án này xây dựng một hệ thống **gợi ý thực đơn dinh dưỡng cá nhân hóa** sử dụng dữ liệu người dùng, thông tin thành phần dinh dưỡng và mô hình **Học máy/Deep Learning**. Người dùng có thể nhập thông tin cá nhân (tuổi, cân nặng, chiều cao, mục tiêu dinh dưỡng) và nhận được các đề xuất món ăn phù hợp với nhu cầu dinh dưỡng, sở thích và chế độ ăn uống. Hệ thống kết hợp phân tích dữ liệu, tiền xử lý và mô hình dự đoán để tối ưu hóa chế độ ăn một cách thông minh và tiện lợi. 🚀
 </p>
 
 ---
 
-## 🌟 GIỚI THIỆU HỆ THỐNG 🤖
+## 🌟 Giới thiệu hệ thống
 
-- **Cảm biến IMU:** Sử dụng MPU6050 để thu thập dữ liệu 6 trục (Gia tốc: $a_x, a_y, a_z$ và Con quay: $g_x, g_y, g_z$) của chuyển động tay.
-- **Mô hình AI:** Xây dựng, huấn luyện và triển khai mô hình **LSTM** để phân loại chính xác các chuỗi thời gian (time-series) cử chỉ.
-- **Kiến trúc TCP/IP:** Giao tiếp Client-Server qua Wi-Fi nội bộ bằng Socket TCP, đảm bảo tốc độ và độ tin cậy của việc truyền dữ liệu cảm biến và lệnh điều khiển.
-- **Điều khiển thời gian thực (Gần):** Sau khi dự đoán cử chỉ, Server Python gửi lệnh đến một ESP32 thứ hai để điều khiển các thiết bị IoT (LED, Còi, LCD, Quạt).
-
----
-
-## 🏗️ KIẾN TRÚC HỆ THỐNG 🔧
-
-Hệ thống hoạt động qua 3 khối chức năng chính:
-
-<p align="center">
-  <img src="images/Picture1.png" alt="Kiến trúc hệ thống nhận diện cử chỉ" width="800"/>
-</p>
-
-1. **Khối Cảm biến (Client):** ESP32 + MPU6050. Thu thập 50 mẫu dữ liệu 6 trục khi được kích hoạt và gửi đến Server qua **Port 5000**.
-2. **Khối Server Xử lý (Python):** PC/Laptop chạy `server_predict.py`. Nhận dữ liệu thô, tiền xử lý (chuẩn hóa), dự đoán bằng mô hình LSTM, và gửi lệnh điều khiển.
-3. **Khối Điều khiển (Control):** ESP32 riêng biệt. Lắng nghe lệnh điều khiển từ Server qua **Port 6000** và kích hoạt thiết bị ngoại vi.
+- **Dữ liệu dinh dưỡng:** Bao gồm calo, protein, carbohydrate, chất béo, vitamin và khoáng chất.
+- **Mô hình AI:** Sử dụng các thuật toán ML/DL (Random Forest, LSTM, hoặc Mạng nơ-ron) để gợi ý thực đơn.
+- **Giao diện tương tác:** Web app/GUI cho phép người dùng nhập dữ liệu, nhận đề xuất, đánh giá và lưu lại các bữa ăn.
+- **Tùy chỉnh cá nhân:** Điều chỉnh theo lượng calo mục tiêu, dị ứng, sở thích món ăn hoặc chế độ ăn đặc biệt (Vegetarian, Keto, Low-carb…).
 
 ---
 
-## 📂 CẤU TRÚC DỰ ÁN 🗂️
+## 🏗️ Kiến trúc hệ thống
+
+Hệ thống gồm 3 khối chính:
+
+1. **Khối Dữ liệu:** Thu thập dữ liệu thực phẩm, thành phần dinh dưỡng, dữ liệu người dùng.
+2. **Khối Xử lý & AI:** Tiền xử lý dữ liệu, chuẩn hóa, xây dựng và huấn luyện mô hình dự đoán thực đơn phù hợp.
+3. **Khối Giao diện Người dùng:** Web app/GUI hiển thị gợi ý thực đơn và cho phép tương tác.
+
+![Kiến trúc hệ thống](images/architecture.png)
+
+---
+
+## 📂 Cấu trúc dự án
 
 ```
-Project
-├── Arduino_Uno/
-│   ├── esp32 with mpu6050.ino     # 💻 Mã nguồn Client (Thu thập & Gửi dữ liệu IMU)
-│   └── esp32_control_device.ino   # 💻 Mã nguồn Control (Nhận lệnh & Điều khiển thiết bị)
-├── gesture_data/                  # 📊 Chứa dữ liệu IMU
-├── images/                        # 🖼️ Chứa hình ảnh (logo, sơ đồ kiến trúc)
-├── collect_data.py                # Luồng Offline: Script Server TCP thu thập dữ liệu thô
-├── clean_data_trim_window.py      # Luồng Offline: Script Tiền xử lý (cắt tĩnh, cửa sổ trượt)
-├── train_lstm.py                  # Luồng Offline: Script Huấn luyện mô hình LSTM
-├── server_predict.py              # Luồng Online: Script Server TCP dự đoán thời gian thực
-├── gesture_model_lstm.h5          # Tệp mô hình LSTM đã huấn luyện
-├── scaler.joblib                  # Tệp bộ chuẩn hóa (StandardScaler) dùng cho dự đoán
-├── model_config.json              # Tệp cấu hình mô hình (max_len, n_features)
-└── README.md                      # Tệp hướng dẫn dự án (Bạn đang xem)
+project/
+│
+├─ raw-data_recipe.csv # Dữ liệu gốc các công thức nấu ăn
+├─ Food_and_Nutrition__.csv # Dữ liệu thông tin người dùng
+├─ recipes_clean.csv # Dữ liệu đã làm sạch
+├─ model_cal.pkl # Mô hình dự đoán nhu cầu calo
+├─ model_prot.pkl # Mô hình dự đoán nhu cầu protein
+├─ app.py # Ứng dụng Streamlit cho người dùng
+├─ xu_ly_du_lieu.ipynb # Notebook tiền xử lý, huấn luyện mô hình
+└─ README.md # Hướng dẫn dự án        
 ```
 
----
-
-## 🛠️ CÔNG NGHỆ SỬ DỤNG 💻
-
-<div align="center">
-
-### 📡 Phần cứng
-[![ESP32](https://img.shields.io/badge/ESP32-32--Pin-blue?style=for-the-badge&logo=espressif)](https://www.espressif.com/)
-[![MPU6050](https://img.shields.io/badge/MPU6050-IMU%20(6--Axis)-green?style=for-the-badge&logo=bosch)](https://www.invensense.tdk.com/products/motion-tracking/6-axis/mpu-6050/)
-[![Arduino IDE](https://img.shields.io/badge/Arduino-IDE-00979D?style=for-the-badge&logo=arduino)](https://www.arduino.cc/)
-[![TCP/IP](https://img.shields.io/badge/Protocol-TCP/IP-orange?style=for-the-badge)](https://en.wikipedia.org/wiki/Transmission_Control_Protocol)
-
-### 🖥️ Phần mềm
-[![Python](https://img.shields.io/badge/Python-3.x-blue?style=for-the-badge&logo=python)]()
-[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-FF6F00?style=for-the-badge&logo=tensorflow)]()
-[![Scikit-learn](https://img.shields.io/badge/Scikit--learn-v1.x-F7931E?style=for-the-badge&logo=scikit-learn)]()
-[![NumPy](https://img.shields.io/badge/NumPy-Data%20Processing-013243?style=for-the-badge&logo=numpy)]()
-</div>
 
 ---
 
-## 🛠️ YÊU CẦU HỆ THỐNG 🔌
+## 🛠️ Công nghệ sử dụng
 
-### 🔌 Phần cứng
-- **2 x ESP32 Dev Kit:** Một cho cảm biến (Client) và một cho điều khiển (Control).
-- **1 x Cảm biến MPU6050 (hoặc IMU 6/9 trục khác):** Gắn vào ESP32 Client.
-- **Thiết bị ngoại vi:** LED, Còi Buzzer, Màn hình LCD, Quạt.
-- **Máy chủ:** PC/Laptop chạy Python, kết nối cùng mạng Wi-Fi với các ESP32.
-
-### 💻 Phần mềm
-- **Arduino IDE:** Với các thư viện `Adafruit_MPU6050`, `WiFiClient`.
-- **Python 3:**
-  - **Thư viện Python:** `tensorflow`, `numpy`, `pandas`, `sklearn`, `joblib`, `socket`, `keyboard`.
-
-### 🚨 Lưu ý cấu hình
-- **Địa chỉ IP:** Đảm bảo `serverIP` (trong code Arduino) và `HOST` (trong code Python) trỏ đúng đến IP của máy tính chạy Server Python.
-- **Port:** Port 5000 (Data) và Port 6000 (Control) phải được mở và không bị Firewall chặn.
+- **Python**: Pandas, NumPy, ast, Matplotlib
+- **Machine Learning**: scikit-learn (RandomForestRegressor, StandardScaler, KMeans)
+- **Text Processing**: TfidfVectorizer
+- **Web App**: Streamlit
+- **Serialization**: Pickle
 
 ---
 
-## 🚀 HƯỚNG DẪN TRIỂN KHAI ⚙️
+## 🛠️ Yêu cầu hệ thống
 
-### 1. Chuẩn bị Mô hình AI (Luồng Offline)
+### Phần mềm
+- Python 3.x
+- Thư viện: `numpy`, `pandas`, `scikit-learn`, `tensorflow`, `joblib`, `streamlit`, `matplotlib`, `seaborn`
 
-#### A. Thu thập Dữ liệu
-1. **Kết nối:** Nạp `esp32 with mpu6050.ino` lên ESP32 Cảm biến và đảm bảo nó kết nối được với Server Python.
-2. **Chạy thu thập:** Trên PC, chạy script:
-   ```bash
-   python scripts/collect_data.py
-   ```
-3. **Thực hiện cử chỉ:** Khi Server yêu cầu (ví dụ: `[GESTURE] === Thu cử chỉ 5 ===`), người dùng thực hiện cử chỉ. Dữ liệu sẽ được lưu vào `data/gesture_data/`.
-
-#### B. Tiền xử lý & Huấn luyện
-1. **Tiền xử lý:** Làm sạch, cắt bỏ phần tĩnh và tạo cửa sổ trượt:
-   ```bash
-   python scripts/clean_data_trim_window.py
-   ```
-2. **Huấn luyện:** Xây dựng, huấn luyện mô hình LSTM và lưu các tệp cần thiết vào thư mục `models/`:
-   ```bash
-   python scripts/train_lstm.py
-   ```
-
-### 2. Chạy Hệ thống Điều khiển (Luồng Online - Thời gian thực)
-
-1. **Nạp code Điều khiển:** Nạp `esp32_control_device.ino` lên ESP32 Điều khiển. Thiết bị này sẽ kết nối với Server Python qua Port 6000.
-2. **Khởi động Server:** Chạy Server dự đoán chính. Server sẽ tải mô hình, mở Port 5000 và 6000:
-   ```bash
-   python scripts/server_predict.py
-   ```
-3. **Kích hoạt:** Khi Server đã sẵn sàng, nhấn phím **'s'** trên Server để gửi lệnh **"start 0"** đến Khối Cảm biến.
-4. **Thực hiện:** Người dùng thực hiện cử chỉ. Sau khi 50 mẫu được gửi về, Server sẽ dự đoán và gửi lệnh điều khiển tương ứng đến Khối Điều khiển.
+### Lưu ý
+- Chuẩn hóa dữ liệu người dùng và dữ liệu thực phẩm trước khi huấn luyện.
+- Máy tính có GPU sẽ tăng tốc quá trình huấn luyện mô hình Machine Learning.
 
 ---
 
-## 📖 ÁNH XẠ CỬ CHỈ & LỆNH ĐIỀU KHIỂN 👨‍💻
+## 🔹 Xử lý dữ liệu
 
+1. **Đọc dữ liệu**: `raw-data_recipe.csv` chứa thông tin công thức, nguyên liệu, dinh dưỡng.
+2. **Làm sạch dữ liệu**:
+   - Bỏ các cột không cần thiết: `aver_rate`, `image_url`, `reviews`, `review_nums`.
+   - Parse cột `nutritions` từ chuỗi JSON sang các cột dinh dưỡng: `calories`, `protein`, `fat`, `carbohydrates`, `fiber`, `sodium`.
+   - Tách danh sách nguyên liệu (`ingredients_list`).
+3. **Xuất dữ liệu sạch**: `recipes_clean.csv`.
 
-| Label Cử chỉ | Tên Cử chỉ (Ví dụ) | Lệnh gửi đến Khối Điều khiển (Port 6000) | Hành động tương ứng |
-|--------------|--------------------|------------------------------------------|----------------------|
-| **0** | Tay Đứng Im       | `BUZZER_OFF`                                 | Tắt Còi báo              |
-| **1** | Vẫy Trái          | `LED_ON`                                     | Bật LED                  |
-| **2** | Vẫy Phải          | `LED_OFF`                                    | Tắt LED                  |
-| **3** | Chặt Xuống        | `BUZZER_ON`                                  | Bật Còi báo              |
-| **4** | Hất Lên           | `LCD_COUNTDOWN`                              | Màn Hình LCD Đếm Ngược   |
-| **5** | Xoay Trái         | `FAN_ON`                                     | Bật Quạt                 |
-| **6** | Đấm Thẳng         | `FAN_OFF`                                    | Tắt Quạt                 |
+```python
+df_final.to_csv('recipes_clean.csv', index=False)
+4. **Lọc món ăn theo thói quen:**:
+   - Tránh thực phẩm người dùng không thích.
+   - Ưu tiên thực phẩm người dùng yêu cầu.
+
+## 🔹 Tính toán chỉ số cơ thể
+
+- **BMI**: 
+
+\[
+BMI = \frac{\text{weight\_kg}}{(\text{height\_m})^2}
+\]
+
+- **TDEE (Total Daily Energy Expenditure)**: dựa trên BMR, giới tính, tuổi, chiều cao, cân nặng và mức độ vận động.
+
+- **Điều chỉnh TDEE theo BMI**:
+
+  - BMI > 25 → giảm 15%
+  - BMI < 18.5 → tăng 15%
+
+```python
+def adjust_tdee(row):
+    if row['BMI'] > 25:
+        return row['tdee'] * 0.85
+    elif row['BMI'] < 18.5:
+        return row['tdee'] * 1.15
+    else:
+        return row['tdee']
+- **Nhu cầu protein: 2g / kg trọng lượng cơ thể.
+---
+
+## 🔹 Huấn luyện mô hình AI
+
+- **Dữ liệu đầu vào**: BMI, tuổi, giới tính, chiều cao, cân nặng, mức độ vận động
+- **Mục tiêu dự đoán**: `target_calories` và `target_protein`
+- **Mô hình sử dụng**: `RandomForestRegressor`
+- **Đánh giá mô hình**:
+  - R² Score
+  - MAE (Mean Absolute Error)
+  - RMSE (Root Mean Squared Error)
+
+- **Lưu mô hình**:
+
+```python
+with open('model_cal.pkl', 'wb') as f:
+    pickle.dump(model_cal, f)
+
+with open('model_prot.pkl', 'wb') as f:
+    pickle.dump(model_prot, f)
+
+# 🥗 Tổng quan Hệ thống Gợi ý Thực đơn Cá nhân (AI Nutrition Recommender)
+
+Dự án này sử dụng Học máy (Machine Learning) và Thuật toán tối ưu hóa để tạo ra thực đơn ăn uống hàng ngày được cá nhân hóa dựa trên thông tin cơ thể (BMI), mục tiêu cân nặng, và thói quen ăn uống của người dùng.
 
 ---
 
+## 💻 Ứng dụng Streamlit và Tính năng Cá nhân hóa
+
+Ứng dụng được triển khai bằng Streamlit, cung cấp giao diện trực quan và các tính năng chính sau:
+
+### ⚙️ Sidebar: Thu thập Thông tin Người dùng
+
+* **Thông số Sinh học:** Nhập **Tuổi**, **Giới tính**, **Chiều cao**, **Cân nặng**.
+* **Hoạt động & Mục tiêu:** Chọn **Mức độ vận động** và **Mục tiêu cân nặng** (`giảm cân`, `giữ cân`, `tăng cân`).
+* **Sở thích Cá nhân:** Nhập **Thực phẩm muốn tránh / ưu tiên** (sử dụng để lọc công thức).
+
+### 🌟 Tính năng Chính
+
+* **Dự đoán Nhu cầu:** Mô hình Random Forest Regressor dự đoán **Calo** và **Protein** cần thiết hàng ngày (được điều chỉnh theo BMI và Mục tiêu).
+* **Lọc Công thức:** Lọc công thức dựa trên sở thích (`avoid_foods`/`prefer_foods`) và nhóm món ăn.
+* **Chia Bữa Ăn:** Thực đơn được chia thành 4 bữa: **Bữa sáng**, **Bữa trưa**, **Bữa tối**, **Bữa phụ**.
+* **Hiển thị Chi tiết:** Bảng kết quả hiển thị chi tiết **Calo**, **Protein (g)**, **Chất béo (g)** và **Nhóm món** (Cluster) của từng món ăn.
+* **Gợi ý Thay thế:** Gợi ý món ăn thay thế dựa trên **nhóm cluster món ăn** (cùng nhóm dinh dưỡng/thành phần).
+* **Lịch sử:** Lưu **Lịch sử thực đơn** tối đa 10 lần tạo.
+
+---
+
+## 🔬 Clustering Công thức Món ăn (KMeans)
+
+Để phân loại và gợi ý món thay thế hợp lý, chúng tôi đã áp dụng thuật toán **KMeans Clustering** trên dữ liệu công thức.
+
+* **Kỹ thuật Feature Engineering:**
+    * **TF-IDF** trên trường **Nguyên liệu** để nhận diện thành phần nguyên liệu.
+    * **Chuẩn hóa (StandardScaler)** các trường **dinh dưỡng chính** (Calo, Protein, Fat, Carb, Fiber, Sodium).
+    * Kết hợp hai vector này để tạo ra ma trận đầu vào cho Clustering.
+* **Phân loại (5 Cluster):**
+    * **Low-Calorie** (ít calo)
+    * **High-Protein** (nhiều protein)
+    * **Balanced** (cân bằng)
+    * **High-Fat** (nhiều chất béo)
+    * **Carb-Heavy** (nhiều tinh bột)
+
+### 📊 Ví dụ Kết quả Thực đơn
+
+| Bữa | Món ăn | Calo | Protein (g) | Chất béo (g) | Nhóm món |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| Bữa sáng | Trứng ốp la | 300 | 20 | 15 | High-Protein |
+| Bữa trưa | Cơm gà | 550 | 35 | 20 | Balanced |
+| Bữa tối | Salad cá hồi | 400 | 25 | 18 | Low-Calorie |
+| Bữa phụ | Sữa chua | 150 | 8 | 5 | Balanced |
+
+---
+
+## 📈 Hình ảnh Trực quan & Đánh giá Mô hình AI
+
+Các biểu đồ được sử dụng để đánh giá hiệu quả của mô hình Random Forest Regressor:
+
+* **Scatter plot:** So sánh giá trị **thực tế (Ground Truth)** và **dự đoán** cho Calo và Protein (Độ gần của các điểm so với đường $y=x$ đánh giá hiệu suất mô hình).
+* **Histogram:** Phân phối **Sai số (Residuals)** giúp kiểm tra độ chệch và độ chính xác của mô hình.
+* Các biểu đồ này giúp **đánh giá hiệu quả mô hình AI** trong việc xác định nhu cầu dinh dưỡng cá nhân.
+
+---
+
+## 🚀 Hướng dẫn Chạy Ứng dụng
+
+Để khởi động ứng dụng Streamlit cục bộ, thực hiện các bước sau:
+
+1.  **Cài đặt Thư viện:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+2.  **Khởi động Ứng dụng:**
+    ```bash
+    streamlit run app_multilang_full.py
+    ```
+3.  **Sử dụng:** Nhập thông tin cá nhân trên **Sidebar**, sau đó nhấn **Tạo thực đơn AI** để xem gợi ý. Món thay thế có thể chọn trực tiếp để cập nhật thực đơn.
+
+---
+
+## ✅ Kết luận và Hướng phát triển
+
+### 📌 Giá trị Hệ thống
+
+Hệ thống giúp người dùng:
+* **Dự đoán nhu cầu** Calo/Protein chính xác theo cơ thể và hoạt động.
+* **Tạo thực đơn cân bằng** và được **cá nhân hóa** theo mục tiêu.
+* **Lọc món ăn** theo sở thích và thói quen.
+* **Gợi ý món thay thế** để đa dạng hóa bữa ăn mà vẫn giữ nguyên nhóm dinh dưỡng.
+
+### 🌟 Mở rộng trong Tương lai
+
+* **Dữ liệu:** Thêm dữ liệu dinh dưỡng chi tiết hơn (như chất béo bão hòa, đường, vitamin, khoáng chất).
+* **Thuật toán:** Tối ưu thuật toán chọn món bằng các kỹ thuật **Tối ưu hóa (Optimization)** để đảm bảo thực đơn **tổng thể** đạt chính xác các mục tiêu dinh dưỡng vĩ mô.
+* **Giao diện:** Hỗ trợ đa ngôn ngữ và giao diện di động.
 ## 🤝 TÁC GIẢ 👥
 
 Dự án được phát triển bởi:
 
-- **Nguyễn Ánh Cương**
-- **Vũ Văn Hiệp**
+- **Trần Hồng Quân**
 
-© 2025 NHÓM 3, KHOA CÔNG NGHỆ THÔNG TIN, TRƯỜNG ĐẠI HỌC ĐẠI NAM.
+© 2025 NHÓM 20, KHOA CÔNG NGHỆ THÔNG TIN, TRƯỜNG ĐẠI HỌC ĐẠI NAM.
 
