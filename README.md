@@ -131,8 +131,14 @@ Mô hình học máy được sử dụng để dự đoán nhu cầu dinh dư�
 ---
 
 ## 🚀 Hướng dẫn Chạy Ứng dụng
+1.  **Tải về â tập dữ liệu csv:**
+    ```bash
+    https://drive.google.com/file/d/1mvCrJuJGAKtU5h3VxJU2NKt08P681EtO/view?usp=sharing
+    https://drive.google.com/file/d/1Nod03u4kkRfsb51H3j1bYK9rKjwFre8D/view?usp=sharing
+    
+    ```
 
-1.  **Cài đặt Thư viện:**
+â.  **Chạy file ipynb:**
     ```bash
     Run All trong file ipynb
     ```
