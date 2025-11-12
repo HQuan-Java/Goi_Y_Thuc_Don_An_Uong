@@ -138,8 +138,8 @@ Tải các tập dữ liệu gốc về và đặt chúng trong thư mục chín
 
 | Tên file | Liên kết Tải xuống |
 | :--- | :--- |
-| `raw-data_recipe.csv` | [Link Google Drive] |
-| `Food_and_Nutrition__.csv` | [Link Google Drive] |
+| `raw-data_recipe.csv` | [[Link Google Drive](https://drive.google.com/file/d/1mvCrJuJGAKtU5h3VxJU2NKt08P681EtO/view?usp=sharing)] |
+| `Food_and_Nutrition__.csv` | [[Link Google Drive](https://drive.google.com/file/d/1Nod03u4kkRfsb51H3j1bYK9rKjwFre8D/view?usp=sharing)] |
 
 ### 2. 🧠 Tiền xử lý và Huấn luyện Mô hình
 
